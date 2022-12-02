@@ -1,0 +1,167 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner
+  namespace: my-apps
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: where-for-dinner-api-gateway
+spec:
+  env: null
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims: null
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-api-gateway
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner-search
+  namespace: my-apps
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: where-for-dinner-search
+    networking.knative.dev/visibility: cluster-local
+spec:
+  env:
+  - name: spring_profiles_active
+    value: mysql
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims:
+  - name: rmq
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: rmq-where-for-dinner
+  - name: db
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: db-where-for-dinner
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-search
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner-search-proc
+  namespace: my-apps
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: where-for-dinner-search-proc
+    networking.knative.dev/visibility: cluster-local
+spec:
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims:
+  - name: rmq
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: rmq-where-for-dinner
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-search-proc
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner-notify
+  namespace: my-apps
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: where-for-dinner-notify
+    networking.knative.dev/visibility: cluster-local
+spec:
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims:
+  - name: rmq
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: rmq-where-for-dinner
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-notify
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner-availability
+  namespace: my-apps
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: where-for-dinner-availability
+    networking.knative.dev/visibility: cluster-local
+spec:
+  env:
+  - name: spring_profiles_active
+    value: mysql
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims:
+  - name: rmq
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: rmq-where-for-dinner
+  - name: db
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: db-where-for-dinner
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-availability
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner-ui
+  namespace: my-apps
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: where-for-dinner-ui
+    networking.knative.dev/visibility: cluster-local
+spec:
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+      app.kubernetes.io/part-of: where-for-dinner
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-ui
