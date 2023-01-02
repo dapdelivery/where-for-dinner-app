@@ -1,6 +1,6 @@
 SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='<SOURCE_IMAGE>')
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
-NAMESPACE = os.getenv("NAMESPACE", default='default')
+NAMESPACE = os.getenv("NAMESPACE", default='<DEVELOPMENT_NAMESPACE>')
 
 k8s_custom_deploy(
     'where-for-dinner-availability',
