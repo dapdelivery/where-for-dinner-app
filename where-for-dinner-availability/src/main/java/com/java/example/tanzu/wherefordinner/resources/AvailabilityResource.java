@@ -154,6 +154,6 @@ public class AvailabilityResource
 	@GetMapping("app/version")
 	public Mono<String> getAvailabilityAppVersion()
 	{
-		return Mono.just("Version-Updated-by-TAP-CI");
+		return Mono.just(appVersion);
 	}
 }
